@@ -16,6 +16,14 @@ var nameRef = new Firebase('http://gamma.firebase.com/stupidpong');
 nameRef.on('value', function(snapshot) {
   alert('fred’s first name is ' + snapshot.val());
 });*/
+
+function choosePlayer(){
+	if(document.playerSelect.player1.checked){
+		currentPlayer=1;
+	}else{
+		currentPlayer=2;
+	}
+}
 function checkCollision(target, ball){
 	var left1 = target.x;
 	var right1 = target.x + target.width;
@@ -137,13 +145,29 @@ window.requestAnimFrame = (function(){
 })();
 
 function drawBars(){
-	for(var i=0;i<2;i++){
-		ctx.putImageData(allImageData[0],_bars[i].x,_bars[i].y);
+	if(currentPlayer=='1'){
+		ctx.putImageData(allImageData[0],_bars[0].x,_bars[0].y);
+		nameRef.on('player2_x', function(snapshot) {
+		  ctx.putImageData(allImageData[0],snapshot.val,_bars[1].y);
+		});	
+	}else{
+		ctx.putImageData(allImageData[0],_bars[1].x,_bars[1].y);
+		nameRef.on('player1_x', function(snapshot) {
+		  ctx.putImageData(allImageData[0],snapshot.val,_bars[0].y);
+		});	
 	}
 }
 
 function drawBall(){
-	ctx.putImageData(allImageData[1],_ball.x,_ball.y);
+	if(currentPlayer=='1'){
+		ctx.putImageData(allImageData[1],_ball.x,_ball.y);
+	}else{
+		nameRef.on('ball_x', function(ballx) {
+			nameRef.on('ball_y', function(bally) {		
+		  		ctx.putImageData(allImageData[0]ballx,bally);
+		  });
+		});			
+	}
 }
 
 function collisions(ball){
@@ -157,11 +181,13 @@ function updateBall(){
 	if(_ball.x>420 || _ball.x < -20 || _ball.y>620 || _ball.y< -20){
 	
 	}else{
-		_ball.x += (_ball._xVel);
-		_ball.y += (_ball._yVel);
-		nameRef.child('ball_x').set(_ball.x);
-		nameRef.child('ball_y').set(_ball.y);
-		collisions(_ball);
+		if(currentPlayer=='1'){
+			_ball.x += (_ball._xVel);
+			_ball.y += (_ball._yVel);
+			nameRef.child('ball_x').set(_ball.x);
+			nameRef.child('ball_y').set(_ball.y);
+			collisions(_ball);
+		}
 	}
 }
 
