@@ -1,14 +1,17 @@
 <html>
 <head>
-	<meta name="viewport" content="width=320; user-scalable=no" />
-	<script type="text/javascript" src="app.js"> </script>
 
+	<script type='text/javascript' src='http://static.firebase.com/v0/firebase.js'></script>
+	<script type="text/javascript" src="app.js"> </script>
 </head>
 <body onload="onBodyLoad()">
+	<div style="border:1px solid black; width:400px; height:600px">
 	<canvas id="theCanvas">
 	
 	</canvas>
-	 <img id="sprite" src="sprite.png" style="display:none" crossOrigin=""/>
+	</div>
+	 <img id="bar" src="bar.png" style="display:none" crossOrigin=""/>
+	 <img id="ball" src="ball.png" style="display:none" crossOrigin=""/>
 </body>
 
 </html>
